@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="400dp"
+              android:layout_height="430dp"
+              android:orientation="vertical"
+
+              android:background="@android:color/white"
+              tools:context=".Activity_Perfiles">
+
+    <ImageView
+        android:id="@+id/imgPerfiles"
+        android:layout_width="400dp"
+        android:layout_height="430dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chat"/>
+
+
+    <TextView
+        android:id="@+id/textofoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:background="@color/background_footer"
+        android:maxLines="1"
+        android:padding="6dp"
+        android:textSize="22sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+
+        android:textColor="@android:color/white" />
+
+
+</FrameLayout>

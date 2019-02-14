@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.antonio.chat">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application
+        android:name=".MyAplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- SOLUCIÓN AL PROBLEMA DE FIREBASE POR EL QUE EL ICONO QUE SE PONÍA ERA DISTINTO ENTRE NOTIFICACIONES FOREGROUND Y BACKGROUND -->
+        <!-- [START fcm_default_icon] -->
+        <!--
+             Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notify"/>
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/md_purple_500"/>
+        <!-- [END fcm_default_icon] -->
+
+       <!-- Desde Android 7 Si targetSdkVersion es 24 o superior, tenemos que usar la clase FileProvider para dar acceso al archivo o carpeta en particular
+            para hacerlos accesibles para otras aplicaciones-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+
+        <activity
+            android:name=".Activity_chats"
+            android:parentActivityName=".Activity_usuarios"
+            android:theme="@style/BocadillosChat"
+            android:windowSoftInputMode="stateHidden">
+            <!--PARA QUE PUEDA SER LLAMADA DESDE OTRA APP SE CREA JN INTENT PROPIO-->
+            <intent-filter>
+                <action android:name="android.intent.accion.ABRIR_ACTIVITY_CHATS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity_usuarios"/>
+        </activity>
+        <activity android:name=".Activity_Login">
+        </activity>
+        <activity
+            android:name=".Activity_usuarios"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- Para poder compartir mágenes o paginas webs-->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:mimeType="text/plain"/>
+                <data android:mimeType="text/html"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".Activity_ajustes"
+            android:parentActivityName=".Activity_usuarios"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity_usuarios"/>
+        </activity>
+
+        <!--PARA LAS IMÁGENES: com.theartofdev.edmodo:android-image-cropper:2.3.+-->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
+        <activity
+            android:name=".Inicio"
+            android:theme="@style/Inicio">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activity_Perfiles"
+            android:label="@string/app_name"
+            android:parentActivityName=".Activity_usuarios"
+            android:theme="@style/CustomPopUp"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity_usuarios"/>
+        </activity>
+
+        <service android:name="servicios.FCMService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name="servicios.FCMInstanceIdService">
+            +
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>
